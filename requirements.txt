@@ -1,0 +1,52 @@
+# falkorMG
+
+A Python library that replicates mgtoolkit's metagraph operations using FalkorDB as the native storage backend.
+
+## Requirements
+
+- Python 3.10+
+- FalkorDB running locally (Docker recommended)
+- `falkordb` Python client
+
+## Installation
+```bash
+pip install falkordb
+```
+
+Start FalkorDB:
+```bash
+docker run -p 6380:6379 -d falkordb/falkordb
+```
+
+## Usage
+```python
+from falkorMG import Metagraph
+
+mg = Metagraph({1, 2, 3, 4, 5})
+
+mg.add_edge({1, 2}, {3})
+mg.add_edge({3}, {4, 5})
+mg.add_edge({2, 3}, {5})
+
+mg.get_edges()
+mg.adjacency_matrix()
+mg.get_closure()
+mg.get_all_metapaths_from({1}, {5})
+mg.get_projection({1, 2, 3})
+mg.get_inverse()
+mg.get_efm({1, 2, 3})
+mg.is_cutset(['edge_id'], {1}, {5})
+mg.is_bridge(['edge_id'], {1}, {5})
+mg.get_minimal_cutset({1}, {5})
+mg.dominates(other_mg)
+mg.equivalent(other_mg)
+
+mg.delete()
+```
+
+## Validation
+
+To compare falkorMG output against mgtoolkit:
+```bash
+python validate.py
+```
